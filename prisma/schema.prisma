@@ -1,0 +1,348 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:wareify123androlut!@139.99.37.154:5432/newest-db?schema=public"
+}
+
+model category {
+  id                 String               @id(map: "category_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_parent          String?              @db.Uuid
+  name               String?              @db.VarChar
+  created_at         DateTime?            @db.Timestamp(6)
+  created_by         DateTime?            @db.Timestamp(6)
+  updated_at         DateTime?            @db.Timestamp(6)
+  updated_by         DateTime?            @db.Timestamp(6)
+  category           category?            @relation("categoryTocategory", fields: [id_parent], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_category     category[]           @relation("categoryTocategory")
+  m_asset            m_asset[]
+  m_maintenance_task m_maintenance_task[]
+}
+
+model inspection_detail {
+  id                      String                  @id(map: "inspection_detail_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_inspection_record    String?                 @db.Uuid
+  id_parameter_inspection String?                 @db.Uuid
+  note                    String                  @db.VarChar
+  score                   Int
+  created_at              DateTime                @db.Timestamp(6)
+  created_by              DateTime                @db.Timestamp(6)
+  updated_at              DateTime                @db.Timestamp(6)
+  updated_by              DateTime                @db.Timestamp(6)
+  inspection_record       inspection_record?      @relation(fields: [id_inspection_record], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_parameter_inspection  m_parameter_inspection? @relation(fields: [id_parameter_inspection], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model inspection_record {
+  id                     String               @id(map: "inspection_record_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_user                String?              @db.Uuid
+  id_location            String?              @db.Uuid
+  id_inspection_schedule String?              @db.Uuid
+  document_number        String               @unique(map: "inspection_record_document_number") @db.VarChar(255)
+  created_at             DateTime             @db.Timestamp(6)
+  result                 String               @db.VarChar(255)
+  note                   String               @db.VarChar(255)
+  status                 String               @db.VarChar(255)
+  created_by             DateTime             @db.Timestamp(6)
+  updated_at             DateTime             @db.Timestamp(6)
+  updated_by             DateTime             @db.Timestamp(6)
+  inspection_detail      inspection_detail[]
+  inspection_schedule    inspection_schedule? @relation(fields: [id_inspection_schedule], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  location               location?            @relation(fields: [id_location], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_user                 m_user?              @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  maintenance_order      maintenance_order[]
+}
+
+model inspection_schedule {
+  id                String              @id(map: "inspection_schedule_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_asset          String              @db.Uuid
+  id_location       String              @db.Uuid
+  id_user           String              @db.Uuid
+  name              String              @db.VarChar(255)
+  scheduled_at      DateTime?           @db.Timestamp(6)
+  created_at        DateTime?           @db.Timestamp(6)
+  updated_at        DateTime?           @db.Timestamp(6)
+  updated_by        DateTime?           @db.Timestamp(6)
+  created_by        DateTime?           @db.Timestamp(6)
+  inspection_record inspection_record[]
+  m_asset           m_asset             @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  location          location            @relation(fields: [id_location], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_user            m_user              @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model location {
+  id                   String                 @id(map: "location_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_parent            String?                @db.Uuid
+  name                 String?                @db.VarChar
+  created_at           DateTime?              @db.Timestamp(6)
+  created_by           DateTime?              @db.Timestamp(6)
+  updated_at           DateTime?              @db.Timestamp(6)
+  updated_by           DateTime?              @db.Timestamp(6)
+  inspection_record    inspection_record[]
+  inspection_schedule  inspection_schedule[]
+  location             location?              @relation("locationTolocation", fields: [id_parent], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_location       location[]             @relation("locationTolocation")
+  m_asset              m_asset[]
+  maintenance_schedule maintenance_schedule[]
+}
+
+model m_asset {
+  id                     String                   @id(map: "master_asset_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_category            String?                  @db.Uuid
+  name                   String?                  @db.VarChar
+  id_location            String?                  @db.Uuid
+  brand                  String?                  @db.VarChar
+  type                   String?                  @db.VarChar
+  serial_number          String?                  @db.VarChar
+  dimension              String?                  @db.VarChar
+  uom                    String?                  @db.VarChar
+  manufacture_year       DateTime?                @db.Date
+  description            String?                  @db.VarChar
+  latitude               String?                  @db.VarChar
+  longitude              String?                  @db.VarChar
+  condition_status       String?                  @db.VarChar
+  created_at             DateTime?                @db.Timestamp(6)
+  created_by             DateTime?                @db.Timestamp(6)
+  updated_at             DateTime?                @db.Timestamp(6)
+  updated_by             DateTime?                @db.Timestamp(6)
+  is_deleted             Boolean?
+  inspection_schedule    inspection_schedule[]
+  category               category?                @relation(fields: [id_category], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "master_asset_id_category_fkey")
+  location               location?                @relation(fields: [id_location], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "master_asset_id_location_fkey")
+  m_parameter_inspection m_parameter_inspection[]
+  maintenance_order      maintenance_order[]
+  maintenance_schedule   maintenance_schedule[]
+  mo_plan                mo_plan[]
+  mo_record              mo_record[]
+  mop_material           mop_material[]
+  mor_material           mor_material[]
+}
+
+model m_maintenance_task {
+  id                       String               @id(map: "m_maintenance_task_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_parent                String?              @db.Uuid
+  id_category              String?              @db.Uuid
+  name                     String               @db.VarChar(255)
+  note                     String               @db.VarChar
+  is_deleted               String               @db.VarChar
+  created_at               DateTime             @db.Timestamp(6)
+  created_by               DateTime             @db.Timestamp(6)
+  updated_at               DateTime             @db.Timestamp(6)
+  updated_by               DateTime             @db.Timestamp(6)
+  category                 category?            @relation(fields: [id_category], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_maintenance_task       m_maintenance_task?  @relation("m_maintenance_taskTom_maintenance_task", fields: [id_parent], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_m_maintenance_task m_maintenance_task[] @relation("m_maintenance_taskTom_maintenance_task")
+  mo_plan                  mo_plan[]
+  mo_record                mo_record[]
+}
+
+model m_parameter_inspection {
+  id                           String                   @id(map: "m_parameter_inspection_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_parent                    String?                  @db.Uuid
+  id_asset                     String?                  @db.Uuid
+  min_value                    Int
+  min_value_description        String                   @db.VarChar(255)
+  max_value                    Int
+  max_value_description        String                   @db.VarChar
+  created_at                   DateTime                 @db.Timestamp(6)
+  updated_at                   DateTime                 @db.Timestamp(6)
+  created_by                   DateTime?                @db.Timestamp(6)
+  updated_by                   DateTime?                @db.Timestamp(6)
+  name                         String                   @db.VarChar(255)
+  is_deleted                   Boolean?
+  inspection_detail            inspection_detail[]
+  m_asset                      m_asset?                 @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_parameter_inspection       m_parameter_inspection?  @relation("m_parameter_inspectionTom_parameter_inspection", fields: [id_parent], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_m_parameter_inspection m_parameter_inspection[] @relation("m_parameter_inspectionTom_parameter_inspection")
+}
+
+model m_role {
+  id         String      @id(map: "master_role_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String?     @db.VarChar
+  created_at DateTime?   @db.Timestamp(6)
+  created_by DateTime?   @db.Timestamp(6)
+  updated_at DateTime?   @db.Timestamp(6)
+  updated_by DateTime?   @db.Timestamp(6)
+  is_deleted Boolean?
+  user_role  user_role[]
+}
+
+model m_user {
+  id                   String                 @id(map: "master_user_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                 String?                @db.VarChar
+  email                String?                @db.VarChar
+  password             Decimal?               @db.Decimal
+  created_at           DateTime?              @db.Timestamp(6)
+  created_by           DateTime?              @db.Timestamp(6)
+  updated_at           DateTime?              @db.Timestamp(6)
+  updated_by           DateTime?              @db.Timestamp(6)
+  is_deleted           Boolean?
+  inspection_record    inspection_record[]
+  inspection_schedule  inspection_schedule[]
+  maintenance_order    maintenance_order[]
+  maintenance_schedule maintenance_schedule[]
+  mo_plan              mo_plan[]
+  mo_record            mo_record[]
+  user_labour          user_labour[]
+  user_role            user_role[]
+}
+
+model m_vendor {
+  id          String        @id(map: "master_vendor_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String?       @db.VarChar
+  created_at  DateTime?     @db.Timestamp(6)
+  created_by  DateTime?     @db.Timestamp(6)
+  updated_at  DateTime?     @db.Timestamp(6)
+  updated_by  DateTime?     @db.Timestamp(6)
+  is_deleted  Boolean?
+  user_labour user_labour[]
+}
+
+model maintenance_order {
+  id                   String             @id(map: "maintenance_order_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_inspection_record String?            @db.Uuid
+  id_user              String?            @db.Uuid
+  id_asset             String?            @db.Uuid
+  mo_number            String             @unique(map: "maintenance_order_mo_number") @db.VarChar(255)
+  name                 String             @db.VarChar(255)
+  note                 String
+  status               String             @db.VarChar
+  created_at           DateTime           @db.Timestamp(6)
+  created_by           DateTime           @db.Timestamp(6)
+  updated_at           DateTime           @db.Timestamp(6)
+  updated_by           DateTime           @db.Timestamp(6)
+  m_asset              m_asset?           @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  inspection_record    inspection_record? @relation(fields: [id_inspection_record], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_user               m_user?            @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mo_plan              mo_plan[]
+}
+
+model maintenance_schedule {
+  id           String   @id(map: "maintenance_schedule_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_asset     String   @db.Uuid
+  id_location  String   @db.Uuid
+  name         String   @db.VarChar(255)
+  id_user      String   @db.Uuid
+  scheduled_at DateTime @db.Timestamp(6)
+  created_at   DateTime @db.Timestamp(6)
+  created_by   DateTime @db.Timestamp(6)
+  updated_at   DateTime @db.Timestamp(6)
+  updated_by   DateTime @db.Timestamp(6)
+  m_asset      m_asset  @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  location     location @relation(fields: [id_location], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_user       m_user   @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model mo_plan {
+  id                                                 String              @id(map: "mo_plan_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_parent                                          String?             @db.Uuid
+  id_user                                            String?             @db.Uuid
+  id_asset                                           String?             @db.Uuid
+  id_transfer_to                                     String?             @db.Uuid
+  id_m_maintenance_task                              String?             @db.Uuid
+  name                                               String              @db.VarChar(255)
+  note                                               String              @db.VarChar
+  quantity                                           Int
+  price                                              Int
+  created_at                                         DateTime            @db.Timestamp(6)
+  created_by                                         DateTime            @db.Timestamp(6)
+  updated_at                                         DateTime            @db.Timestamp(6)
+  updated_by                                         DateTime            @db.Timestamp(6)
+  id_mop_material                                    String?             @db.Uuid
+  id_mo                                              String?             @db.Uuid
+  m_asset                                            m_asset?            @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_maintenance_task                                 m_maintenance_task? @relation(fields: [id_m_maintenance_task], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  maintenance_order                                  maintenance_order?  @relation(fields: [id_mo], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mop_material_mo_plan_id_mop_materialTomop_material mop_material?       @relation("mo_plan_id_mop_materialTomop_material", fields: [id_mop_material], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mo_plan                                            mo_plan?            @relation("mo_planTomo_plan", fields: [id_parent], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_mo_plan                                      mo_plan[]           @relation("mo_planTomo_plan")
+  m_user                                             m_user?             @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mo_record                                          mo_record[]
+  mop_material_mop_material_id_mo_planTomo_plan      mop_material[]      @relation("mop_material_id_mo_planTomo_plan")
+}
+
+model mo_record {
+  id                                                   String              @id(map: "mo_record_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_parent                                            String?             @db.Uuid
+  id_mo_plan                                           String?             @db.Uuid
+  id_user                                              String?             @db.Uuid
+  id_asset                                             String?             @db.Uuid
+  document_number                                      String              @unique(map: "mo_record_document_number") @db.VarChar(255)
+  id_m_maintenance_task                                String?             @db.Uuid
+  id_mor_material                                      String?             @db.Uuid
+  name                                                 String              @db.VarChar(255)
+  note                                                 String              @db.VarChar
+  quantity                                             Int
+  price                                                Int
+  status                                               String              @default("[Completed]") @db.VarChar
+  created_at                                           DateTime            @db.Timestamp(6)
+  created_by                                           DateTime            @db.Timestamp(6)
+  updated_at                                           DateTime            @db.Timestamp(6)
+  updated_by                                           DateTime            @db.Timestamp(6)
+  m_asset                                              m_asset?            @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_maintenance_task                                   m_maintenance_task? @relation(fields: [id_m_maintenance_task], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mo_plan                                              mo_plan?            @relation(fields: [id_mo_plan], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mor_material_mo_record_id_mor_materialTomor_material mor_material?       @relation("mo_record_id_mor_materialTomor_material", fields: [id_mor_material], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "mo_record_id_mor_asset_fkey")
+  mo_record                                            mo_record?          @relation("mo_recordTomo_record", fields: [id_parent], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_mo_record                                      mo_record[]         @relation("mo_recordTomo_record")
+  m_user                                               m_user?             @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mor_material_mor_material_id_mo_recordTomo_record    mor_material[]      @relation("mor_material_id_mo_recordTomo_record")
+}
+
+model mop_material {
+  id                                            String    @id(map: "mop_material_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_asset                                      String?   @db.Uuid
+  id_mo_plan                                    String?   @db.Uuid
+  note                                          String    @db.VarChar
+  quantity                                      Int
+  price                                         Int
+  created_at                                    DateTime  @db.Timestamp(6)
+  created_by                                    DateTime  @db.Timestamp(6)
+  updated_at                                    DateTime  @db.Timestamp(6)
+  updated_by                                    DateTime  @db.Timestamp(6)
+  mo_plan_mo_plan_id_mop_materialTomop_material mo_plan[] @relation("mo_plan_id_mop_materialTomop_material")
+  m_asset                                       m_asset?  @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mo_plan_mop_material_id_mo_planTomo_plan      mo_plan?  @relation("mop_material_id_mo_planTomo_plan", fields: [id_mo_plan], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model mor_material {
+  id                                                String      @id(map: "mor_material_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_asset                                          String?     @db.Uuid
+  id_mo_record                                      String?     @db.Uuid
+  note                                              String      @db.VarChar
+  quantity                                          Int
+  price                                             Int
+  created_at                                        DateTime    @db.Timestamp(6)
+  created_by                                        DateTime    @db.Timestamp(6)
+  updated_at                                        DateTime    @db.Timestamp(6)
+  updated_by                                        DateTime    @db.Timestamp(6)
+  mo_record_mo_record_id_mor_materialTomor_material mo_record[] @relation("mo_record_id_mor_materialTomor_material")
+  m_asset                                           m_asset?    @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mo_record_mor_material_id_mo_recordTomo_record    mo_record?  @relation("mor_material_id_mo_recordTomo_record", fields: [id_mo_record], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model user_labour {
+  id         String    @id(map: "user_labour_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_user    String?   @db.Uuid
+  id_vendor  String?   @db.Uuid
+  created_at DateTime  @db.Timestamp(6)
+  created_by DateTime  @db.Timestamp(6)
+  updated_at DateTime  @db.Timestamp(6)
+  updated_by DateTime  @db.Timestamp(6)
+  m_user     m_user?   @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_vendor   m_vendor? @relation(fields: [id_vendor], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model user_role {
+  id         String    @id(map: "user_role_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_user    String?   @db.Uuid
+  id_role    String?   @db.Uuid
+  created_at DateTime? @db.Timestamp(6)
+  created_by DateTime? @db.Timestamp(6)
+  updated_at DateTime? @db.Timestamp(6)
+  updated_by DateTime? @db.Timestamp(6)
+  m_role     m_role?   @relation(fields: [id_role], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_user     m_user?   @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
