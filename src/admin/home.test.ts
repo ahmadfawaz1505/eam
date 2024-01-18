@@ -53,3 +53,29 @@ test("list issue", async () => {
 
   //   console.log(result);
 });
+
+test("list follow up", async () => {
+  const result = await db.maintenance_schedule.findMany({
+    where: {},
+    select: {
+      id: true,
+      name: true,
+      scheduled_at: true,
+    },
+  });
+
+  //   console.log(result);
+});
+
+test("Maintenance Tracking", async () => {
+  const result = await db.maintenance_schedule.findMany({
+    where: {},
+    select: {
+      id: true,
+      name: true,
+      scheduled_at: true,
+    },
+  });
+
+  //   console.log(result);
+});
