@@ -33,6 +33,14 @@ test("list issue", async () => {
       m_asset: {
         select:{
           name: true,
+          include: {
+            category: {
+              select:{
+                name: true,
+              }
+            }
+          }
+          status: true,
         }
       }
     },
