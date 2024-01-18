@@ -26,3 +26,17 @@ test("list maintenance schedule", async () => {
 
   //   console.log(result);
 });
+
+test("list inspection record", async () => {
+  const result = await db.inspection_record.findMany({
+    where: {},
+    select: {
+      id: true,
+      id_inspection_schedule: true,
+      document_number: true,
+      result: true,
+      created_at: true,
+      status: true,
+    },
+  });
+});
