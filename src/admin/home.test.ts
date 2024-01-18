@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 const db = new PrismaClient();
 
 test("list inspection schedule", async () => {
-  const result = await db.inspection_schedule.findMany({
+  const inp_schedule = await db.inspection_schedule.findMany({
     where: {},
     select: {
       id: true,
@@ -11,7 +11,7 @@ test("list inspection schedule", async () => {
     },
   });
 
-  //   console.log(result);
+  console.log(inp_schedule);
 });
 
 test("list maintenance schedule", async () => {
