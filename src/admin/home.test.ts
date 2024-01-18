@@ -39,8 +39,13 @@ test("list issue", async () => {
                 name: true,
               }
             }
-          }
+          },
           status: true,
+          include: {
+            m_user:  {
+              name: true,
+            }
+          },
         }
       }
     },
