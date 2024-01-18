@@ -15,12 +15,26 @@ test("list inspection schedule", async () => {
 });
 
 test("list maintenance schedule", async () => {
-  const result = await db.inspection_schedule.findMany({
+  const result = await db.maintenance_schedule.findMany({
     where: {},
     select: {
       id: true,
       name: true,
       scheduled_at: true,
+    },
+  });
+
+  //   console.log(result);
+});
+
+test("list issue", async () => {
+  const result = await db.inspection_record.findMany({
+    include: {
+      m_asset: {
+        select:{
+          name: true,
+        }
+      }
     },
   });
 
