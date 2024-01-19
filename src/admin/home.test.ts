@@ -27,32 +27,32 @@ test("list maintenance schedule", async () => {
   //   console.log(result);
 });
 
-test("list issue", async () => {
-  const result = await db.inspection_record.findMany({
-    include: {
-      m_asset: {
-        select:{
-          name: true,
-          include: {
-            category: {
-              select:{
-                name: true,
-              }
-            }
-          },
-          status: true,
-          include: {
-            m_user:  {
-              name: true,
-            }
-          },
-        }
-      }
-    },
-  });
+// test("list issue", async () => {
+//   const result = await db.inspection_record.findMany({
+//     include: {
+//       m_asset: {
+//         select:{
+//           name: true,
+//           include: {
+//             category: {
+//               select:{
+//                 name: true,
+//               }
+//             }
+//           },
+//           status: true,
+//           include: {
+//             m_user:  {
+//               name: true,
+//             }
+//           },
+//         }
+//       }
+//     },
+//   });
 
-  //   console.log(result);
-});
+//   //   console.log(result);
+// });
 
 test("list follow up", async () => {
   const result = await db.maintenance_schedule.findMany({
