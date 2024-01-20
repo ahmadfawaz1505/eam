@@ -34,5 +34,5 @@ test("hasil scan inspect", async () => {
     },
   });
 
-  console.log(result);
+  //console.log(result);
 });

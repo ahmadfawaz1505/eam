@@ -27,44 +27,47 @@ test("list maintenance schedule", async () => {
   //   console.log(result);
 });
 
-// test("list issue", async () => {
+// test("hasil scan inspect", async () => {
 //   const result = await db.inspection_record.findMany({
 //     include: {
-//       m_asset: {
-//         select:{
+//       m_user: {
+//         select: {
 //           name: true,
-//           include: {
-//             category: {
-//               select:{
-//                 name: true,
-//               }
-//             }
-//           },
-//           status: true,
-//           include: {
-//             m_user:  {
-//               name: true,
-//             }
-//           },
-//         }
-//       }
+//         },
+//       },
+//     },
+//     select: {
+//       result: true,
 //     },
 //   });
 
-//   //   console.log(result);
+//   console.log(result);
 // });
 
 test("list follow up", async () => {
-  const result = await db.maintenance_schedule.findMany({
-    where: {},
+  const result = await db.inspection_record.findMany({
     select: {
       id: true,
-      name: true,
-      scheduled_at: true,
+      m_asset: {
+        select: {
+          name: true,
+          category: {
+            select: {
+              name: true,
+            },
+          },
+          location: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+      result: true,
     },
   });
 
-  //   console.log(result);
+    console.log(result);
 });
 
 test("Maintenance Tracking", async () => {
