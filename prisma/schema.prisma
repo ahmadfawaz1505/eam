@@ -12,9 +12,9 @@ model category {
   id_parent          String?              @db.Uuid
   name               String?              @db.VarChar
   created_at         DateTime?            @db.Timestamp(6)
-  created_by         DateTime?            @db.Timestamp(6)
   updated_at         DateTime?            @db.Timestamp(6)
-  updated_by         DateTime?            @db.Timestamp(6)
+  created_by         String?              @db.Uuid
+  updated_by         String?              @db.Uuid
   category           category?            @relation("categoryTocategory", fields: [id_parent], references: [id], onDelete: NoAction, onUpdate: NoAction)
   other_category     category[]           @relation("categoryTocategory")
   m_asset            m_asset[]
@@ -61,7 +61,7 @@ model inspection_schedule {
   id                String              @id(map: "inspection_schedule_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   id_asset          String              @db.Uuid
   id_location       String              @db.Uuid
-  id_user           String              @db.Uuid
+  assigned_to       String              @db.Uuid
   name              String              @db.VarChar(255)
   scheduled_at      DateTime?           @db.Timestamp(6)
   created_at        DateTime?           @db.Timestamp(6)
@@ -71,7 +71,7 @@ model inspection_schedule {
   inspection_record inspection_record[]
   m_asset           m_asset             @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
   location          location            @relation(fields: [id_location], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  m_user            m_user              @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_user            m_user              @relation(fields: [assigned_to], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inspection_schedule_id_user_fkey")
 }
 
 model location {
@@ -227,7 +227,7 @@ model maintenance_schedule {
   id_asset     String   @db.Uuid
   id_location  String   @db.Uuid
   name         String   @db.VarChar(255)
-  id_user      String   @db.Uuid
+  assigned_to  String   @db.Uuid
   scheduled_at DateTime @db.Timestamp(6)
   created_at   DateTime @db.Timestamp(6)
   created_by   DateTime @db.Timestamp(6)
@@ -235,7 +235,7 @@ model maintenance_schedule {
   updated_by   DateTime @db.Timestamp(6)
   m_asset      m_asset  @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
   location     location @relation(fields: [id_location], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  m_user       m_user   @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_user       m_user   @relation(fields: [assigned_to], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "maintenance_schedule_id_user_fkey")
 }
 
 model mo_plan {
