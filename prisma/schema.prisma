@@ -307,7 +307,7 @@ model mop_material {
   updated_by                                    DateTime  @db.Timestamp(6)
   mo_plan_mo_plan_id_mop_materialTomop_material mo_plan[] @relation("mo_plan_id_mop_materialTomop_material")
   m_asset                                       m_asset?  @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  mo_plan_mop_material_id_mo_planTomo_plan      mo_plan?  @relation("mop_material_id_mo_planTomo_plan", fields: [id_mo_plan], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mo_plan_mop_material_id_mo_planTomo_plan      mo_plan?  @relation("mop_material_id_mo_planTomo_plan", fields: [id_mo_plan], references: [id], onDelete: Cascade)
 }
 
 model mor_material {
