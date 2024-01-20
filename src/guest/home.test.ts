@@ -1,17 +1,24 @@
 import { PrismaClient } from "@prisma/client";
 const db = new PrismaClient();
 
-test("hasil scan inspect", async () => {
+test("list inspection schedule", async () => {
   const result = await db.inspection_record.findMany({
-    where: {},
-    include: {
-      location: {
+    select: {
+      id: true,
+      result: true,
+      m_asset: {
         select: {
+          id: true,
           name: true,
-        },
-        include: {
-          m_asset: {
+          category: {
             select: {
+              id: true,
+              name: true,
+            },
+          },
+          location: {
+            select: {
+              id: true,
               name: true,
             },
           },
@@ -22,3 +29,11 @@ test("hasil scan inspect", async () => {
 
   // console.log(result);
 });
+
+// include: {
+//   location: {
+//     select: {
+//       name: true,
+//     },
+//   },
+// },
