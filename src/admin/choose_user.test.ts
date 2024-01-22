@@ -11,7 +11,7 @@ test("choose user inspector", async () => {
       created_by: true,
     },
   });
-    console.log(choose_user);
+   // console.log(choose_user);
 });
 
 test("choose user maintenance", async () => {
@@ -24,7 +24,7 @@ test("choose user maintenance", async () => {
       created_by: true,
     },
   });
-    console.log(choose_user);
+    // console.log(choose_user);
 });
 
 test("choose user user", async () => {
@@ -37,7 +37,7 @@ test("choose user user", async () => {
       created_by: true,
     },
   });
-    console.log(choose_user);
+    // console.log(choose_user);
 });
 
 test("choose user vendor", async () => {
@@ -50,7 +50,7 @@ test("choose user vendor", async () => {
       created_by: true,
     },
   });
-    console.log(choose_user);
+    // console.log(choose_user);
 });
 
 test("choose user admin", async () => {
@@ -63,5 +63,5 @@ test("choose user admin", async () => {
       created_by: true,
     },
   });
-    console.log(choose_user);
+    // console.log(choose_user);
 });
