@@ -303,99 +303,93 @@ model maintenance_schedule {
 }
 
 model mo_plan {
-  id                                                 String              @id(map: "mo_plan_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  id_parent                                          String?             @db.Uuid
-  id_user                                            String?             @db.Uuid
-  id_asset                                           String?             @db.Uuid
-  id_transfer_to                                     String?             @db.Uuid
-  id_m_maintenance_task                              String?             @db.Uuid
-  name                                               String              @db.VarChar(255)
-  note                                               String?             @db.VarChar
-  quantity                                           Int
-  price                                              Int
-  created_at                                         DateTime            @db.Timestamp(6)
-  updated_at                                         DateTime?           @db.Timestamp(6)
-  id_mop_material                                    String?             @db.Uuid
-  id_mo                                              String?             @db.Uuid
-  created_by                                         String              @db.Uuid
-  updated_by                                         String?             @db.Uuid
-  m_user_mo_plan_created_byTom_user                  m_user              @relation("mo_plan_created_byTom_user", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  m_asset                                            m_asset?            @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  m_maintenance_task                                 m_maintenance_task? @relation(fields: [id_m_maintenance_task], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  maintenance_order                                  maintenance_order?  @relation(fields: [id_mo], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  mop_material_mo_plan_id_mop_materialTomop_material mop_material?       @relation("mo_plan_id_mop_materialTomop_material", fields: [id_mop_material], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  mo_plan                                            mo_plan?            @relation("mo_planTomo_plan", fields: [id_parent], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  other_mo_plan                                      mo_plan[]           @relation("mo_planTomo_plan")
-  m_user                                             m_user?             @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  m_user_mo_plan_updated_byTom_user                  m_user?             @relation("mo_plan_updated_byTom_user", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  mo_record                                          mo_record[]
-  mop_material_mop_material_id_mo_planTomo_plan      mop_material[]      @relation("mop_material_id_mo_planTomo_plan")
+  id                                            String              @id(map: "mo_plan_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_parent                                     String?             @db.Uuid
+  id_user                                       String?             @db.Uuid
+  id_asset                                      String?             @db.Uuid
+  id_transfer_to                                String?             @db.Uuid
+  id_m_maintenance_task                         String?             @db.Uuid
+  name                                          String              @db.VarChar(255)
+  note                                          String?             @db.VarChar
+  quantity                                      Int
+  price                                         Int
+  created_at                                    DateTime            @db.Timestamp(6)
+  updated_at                                    DateTime?           @db.Timestamp(6)
+  id_mo                                         String?             @db.Uuid
+  created_by                                    String              @db.Uuid
+  updated_by                                    String?             @db.Uuid
+  m_user_mo_plan_created_byTom_user             m_user              @relation("mo_plan_created_byTom_user", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_asset                                       m_asset?            @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_maintenance_task                            m_maintenance_task? @relation(fields: [id_m_maintenance_task], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  maintenance_order                             maintenance_order?  @relation(fields: [id_mo], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mo_plan                                       mo_plan?            @relation("mo_planTomo_plan", fields: [id_parent], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_mo_plan                                 mo_plan[]           @relation("mo_planTomo_plan")
+  m_user                                        m_user?             @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_user_mo_plan_updated_byTom_user             m_user?             @relation("mo_plan_updated_byTom_user", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mo_record                                     mo_record[]
+  mop_material_mop_material_id_mo_planTomo_plan mop_material[]      @relation("mop_material_id_mo_planTomo_plan")
 }
 
 model mo_record {
-  id                                                   String              @id(map: "mo_record_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  id_parent                                            String?             @db.Uuid
-  id_mo_plan                                           String?             @db.Uuid
-  id_user                                              String?             @db.Uuid
-  id_asset                                             String?             @db.Uuid
-  document_number                                      String              @unique(map: "mo_record_document_number") @db.VarChar(255)
-  id_m_maintenance_task                                String?             @db.Uuid
-  id_mor_material                                      String?             @db.Uuid
-  name                                                 String              @db.VarChar(255)
-  note                                                 String?             @db.VarChar
-  quantity                                             Int
-  price                                                Int
-  status                                               String              @default("[Completed]") @db.VarChar
-  created_at                                           DateTime?           @db.Timestamp(6)
-  updated_at                                           DateTime?           @db.Timestamp(6)
-  created_by                                           String              @db.Uuid
-  updated_by                                           String?             @db.Uuid
-  m_user_mo_record_created_byTom_user                  m_user              @relation("mo_record_created_byTom_user", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  m_asset                                              m_asset?            @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  m_maintenance_task                                   m_maintenance_task? @relation(fields: [id_m_maintenance_task], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  mo_plan                                              mo_plan?            @relation(fields: [id_mo_plan], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  mor_material_mo_record_id_mor_materialTomor_material mor_material?       @relation("mo_record_id_mor_materialTomor_material", fields: [id_mor_material], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "mo_record_id_mor_asset_fkey")
-  mo_record                                            mo_record?          @relation("mo_recordTomo_record", fields: [id_parent], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  other_mo_record                                      mo_record[]         @relation("mo_recordTomo_record")
-  m_user                                               m_user?             @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  m_user_mo_record_updated_byTom_user                  m_user?             @relation("mo_record_updated_byTom_user", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  mor_material_mor_material_id_mo_recordTomo_record    mor_material[]      @relation("mor_material_id_mo_recordTomo_record")
+  id                                                String              @id(map: "mo_record_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_parent                                         String?             @db.Uuid
+  id_mo_plan                                        String?             @db.Uuid
+  id_user                                           String?             @db.Uuid
+  id_asset                                          String?             @db.Uuid
+  document_number                                   String              @unique(map: "mo_record_document_number") @db.VarChar(255)
+  id_m_maintenance_task                             String?             @db.Uuid
+  name                                              String              @db.VarChar(255)
+  note                                              String?             @db.VarChar
+  quantity                                          Int
+  price                                             Int
+  status                                            String              @default("[Completed]") @db.VarChar
+  created_at                                        DateTime?           @db.Timestamp(6)
+  updated_at                                        DateTime?           @db.Timestamp(6)
+  created_by                                        String              @db.Uuid
+  updated_by                                        String?             @db.Uuid
+  m_user_mo_record_created_byTom_user               m_user              @relation("mo_record_created_byTom_user", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_asset                                           m_asset?            @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_maintenance_task                                m_maintenance_task? @relation(fields: [id_m_maintenance_task], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mo_plan                                           mo_plan?            @relation(fields: [id_mo_plan], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mo_record                                         mo_record?          @relation("mo_recordTomo_record", fields: [id_parent], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_mo_record                                   mo_record[]         @relation("mo_recordTomo_record")
+  m_user                                            m_user?             @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_user_mo_record_updated_byTom_user               m_user?             @relation("mo_record_updated_byTom_user", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mor_material_mor_material_id_mo_recordTomo_record mor_material[]      @relation("mor_material_id_mo_recordTomo_record")
 }
 
 model mop_material {
-  id                                            String    @id(map: "mop_material_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  id_asset                                      String?   @db.Uuid
-  id_mo_plan                                    String?   @db.Uuid
-  note                                          String?   @db.VarChar
-  quantity                                      Int
-  price                                         Int
-  created_at                                    DateTime? @db.Timestamp(6)
-  updated_at                                    DateTime? @db.Timestamp(6)
-  created_by                                    String    @db.Uuid
-  updated_by                                    String?   @db.Uuid
-  mo_plan_mo_plan_id_mop_materialTomop_material mo_plan[] @relation("mo_plan_id_mop_materialTomop_material")
-  m_user_mop_material_created_byTom_user        m_user    @relation("mop_material_created_byTom_user", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  m_asset                                       m_asset?  @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  mo_plan_mop_material_id_mo_planTomo_plan      mo_plan?  @relation("mop_material_id_mo_planTomo_plan", fields: [id_mo_plan], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  m_user_mop_material_updated_byTom_user        m_user?   @relation("mop_material_updated_byTom_user", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id                                       String    @id(map: "mop_material_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_asset                                 String?   @db.Uuid
+  note                                     String?   @db.VarChar
+  quantity                                 Int
+  price                                    Int
+  created_at                               DateTime? @db.Timestamp(6)
+  updated_at                               DateTime? @db.Timestamp(6)
+  created_by                               String    @db.Uuid
+  updated_by                               String?   @db.Uuid
+  id_mo_plan                               String?   @db.Uuid
+  m_user_mop_material_created_byTom_user   m_user    @relation("mop_material_created_byTom_user", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_asset                                  m_asset?  @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mo_plan_mop_material_id_mo_planTomo_plan mo_plan?  @relation("mop_material_id_mo_planTomo_plan", fields: [id_mo_plan], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_user_mop_material_updated_byTom_user   m_user?   @relation("mop_material_updated_byTom_user", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model mor_material {
-  id                                                String      @id(map: "mor_material_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  id_asset                                          String?     @db.Uuid
-  id_mo_record                                      String?     @db.Uuid
-  note                                              String?     @db.VarChar
-  quantity                                          Int
-  price                                             Int
-  created_at                                        DateTime?   @db.Timestamp(6)
-  updated_at                                        DateTime?   @db.Timestamp(6)
-  created_by                                        String      @db.Uuid
-  updated_by                                        String?     @db.Uuid
-  mo_record_mo_record_id_mor_materialTomor_material mo_record[] @relation("mo_record_id_mor_materialTomor_material")
-  m_user_mor_material_created_byTom_user            m_user      @relation("mor_material_created_byTom_user", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  m_asset                                           m_asset?    @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  mo_record_mor_material_id_mo_recordTomo_record    mo_record?  @relation("mor_material_id_mo_recordTomo_record", fields: [id_mo_record], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  m_user_mor_material_updated_byTom_user            m_user?     @relation("mor_material_updated_byTom_user", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id                                             String     @id(map: "mor_material_id") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_asset                                       String?    @db.Uuid
+  id_mo_record                                   String?    @db.Uuid
+  note                                           String?    @db.VarChar
+  quantity                                       Int
+  price                                          Int
+  created_at                                     DateTime?  @db.Timestamp(6)
+  updated_at                                     DateTime?  @db.Timestamp(6)
+  created_by                                     String     @db.Uuid
+  updated_by                                     String?    @db.Uuid
+  m_user_mor_material_created_byTom_user         m_user     @relation("mor_material_created_byTom_user", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_asset                                        m_asset?   @relation(fields: [id_asset], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mo_record_mor_material_id_mo_recordTomo_record mo_record? @relation("mor_material_id_mo_recordTomo_record", fields: [id_mo_record], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  m_user_mor_material_updated_byTom_user         m_user?    @relation("mor_material_updated_byTom_user", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model user_labour {

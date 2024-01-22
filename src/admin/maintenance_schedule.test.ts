@@ -1,6 +1,33 @@
 import { PrismaClient } from "@prisma/client";
 const db = new PrismaClient();
 
+test("selected asset", async () => {
+  const selected_asset = await db.m_asset.findMany({
+    where: {
+      id: "fa95ef66-9024-4268-9a2e-f764ff9000c9",
+      location: {
+        id: "e6047c0f-b917-4424-9708-8ddbc53fc108",
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+      location: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      category: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+  });
+  console.log(selected_asset);
+});
 
 //audit_trail -> id, ts, by, activity, table, meta
 test("create maintenance schedule", async () => {
