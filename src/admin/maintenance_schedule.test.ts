@@ -19,14 +19,6 @@ test("create maintenance schedule", async () => {
         location: {
             connect: {id: ""}
         }
-        // m_user:{
-        //     create: {
-        //         name: "Fawas",
-        //     },
-        // },
-        // include: {
-            // m_user: {},
-        // },
     },
   });
 
