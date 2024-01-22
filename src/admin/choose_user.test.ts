@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const db = new PrismaClient();
 
-test("inspection schedule", async () => {
+test("choose user", async () => {
   const choose_user = await db.m_user.findMany({
     select: {
       id: true,
@@ -9,5 +9,5 @@ test("inspection schedule", async () => {
       email: true,
     },
   });
-  //  console.log(choose_user);
+    console.log(choose_user);
 });
