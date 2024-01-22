@@ -33,6 +33,7 @@ test("new inspection schedule", async () => {
   const inp_schedule = await db.inspection_schedule.create({
       data: {
           name: "Jadwal inspeksi 23/01/2024",
+          scheduled_at: "2024-01-10 00:00:00",
           created_at: new Date(),
           m_user_inspection_schedule_created_byTom_user: {
               connect: {id: "294d4986-f1ac-4bf5-9f0e-c963e94627b6"}

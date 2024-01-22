@@ -35,7 +35,9 @@ test("create maintenance schedule", async () => {
     data: {
         name: "Jadwal maintenance rutin",
         scheduled_at: "2024-09-14 00:00:00",
-        created_by: "67f64a2c-8ca6-49fe-94b2-de07ca907768",
+        m_user_maintenance_schedule_created_byTom_user: {
+          connect: { id: "67f64a2c-8ca6-49fe-94b2-de07ca907768"}
+        },
         assigned_to: {
             connect: {id: ""}
             // connectOrCreate: {create: {}, where: {id : ""}}
