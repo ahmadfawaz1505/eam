@@ -11,7 +11,7 @@ test("list inspection schedule", async () => {
     },
   });
 
-  console.log(inp_schedule);
+  // console.log(inp_schedule);
 });
 
 test("list maintenance schedule", async () => {
@@ -67,7 +67,7 @@ test("list follow up", async () => {
     },
   });
 
-    console.log(result);
+  // console.log(result);
 });
 
 test("Maintenance Tracking", async () => {

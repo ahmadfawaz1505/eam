@@ -25,17 +25,18 @@ test("detail location dan category", async () => {
 });
 
 test("task", async () => {
-  const result = await db.mop_material.findMany({
+  const result = await db.mo_plan.findMany({
     select: {
       id: true,
       quantity: true,
       price: true,
-      m_asset: {
+      m_maintenance_task: {
         select: {
-          id: true,
           name: true,
         },
       },
+
+      // kurang field name relasi mop-material dan mo_plan krena id nya over
     },
   });
 

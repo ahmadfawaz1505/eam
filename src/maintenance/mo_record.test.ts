@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const db = new PrismaClient();
 
-test("detail asset dan location", async () => {
+test("detail location dan category", async () => {
   const result = await db.m_asset.findMany({
     select: {
       id: true,
@@ -24,14 +24,19 @@ test("detail asset dan location", async () => {
   //   console.log(result);
 });
 
-test("hasil scan inspect", async () => {
-  const result = await db.m_asset.findMany({
-    include: {
-      location: {
+test("list mo plan dan mo record", async () => {
+  const result = await db.mo_record.findMany({
+    select: {
+      id: true,
+      m_maintenance_task: {
         select: {
           name: true,
         },
       },
+      name: true,
+      price: true,
     },
   });
+
+  //   console.log(result);
 });

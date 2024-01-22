@@ -5,7 +5,7 @@ test("detail location dan category", async () => {
   const result = await db.mop_material.findMany({
     select: {
       id: true,
-      //   gk ada moplan karena idnya ndk ada
+      // gk ada namenya krena moplan nya ndk bisa direlasikan
       quantity: true,
       price: true,
     },

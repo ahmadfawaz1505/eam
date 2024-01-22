@@ -1,14 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 const db = new PrismaClient();
 
-test("list asset", async () => {
-  const listAsset = await db.m_asset.findMany({
+test("detail category", async () => {
+  const result = await db.category.findMany({
     select: {
       id: true,
       name: true,
-      brand: true,
     },
   });
 
-  //  console.log(listAsset);
+  //   console.log(result);
 });
