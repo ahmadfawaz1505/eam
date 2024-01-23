@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { get_asset } from "./inspection_schedule.test";
 const db = new PrismaClient();
 
 test("selected asset", async () => {
@@ -29,10 +30,37 @@ test("selected asset", async () => {
     console.log(selected_asset);
   });
 
+  test("refrence inspection record", async () => {
+    const asset = await get_asset()
+    const ref_inp = await db.inspection_record.findFirst({
+      where: {
+        m_asset: {
+          id: asset.id,
+        },
+        OR: [
+          {
+            result: {contains: "Caution"},
+          },
+          {
+            result: {contains: "Urgent"},
+          },
+        ],
+      },
+      select: {
+        id: true,
+        document_number: true,
+        result: true,
+      },
+    });
+    console.log(ref_inp);
+  });
+
+
 test("new maintenance ticket", async () => {
+    const asset = await get_asset()
     const new_mtn_ticket = await db.maintenance_order.create({
         data: {
-            mo_number: "MTN1000111",
+            mo_number: "MTN1000112",
             name: "Service HP",
             status: "On Going",
             created_at: new Date(),
@@ -43,7 +71,7 @@ test("new maintenance ticket", async () => {
                 connect: {id: "aff84e3b-ac2a-4176-a47a-d6dd5faec6f3"}
             },
             m_asset: {
-                connect: {id: "fa95ef66-9024-4268-9a2e-f764ff9000c9"}
+                connect: {id: asset.id}
             },
             //assigned to
             m_user: {

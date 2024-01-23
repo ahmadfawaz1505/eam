@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { get_asset } from "./inspection_schedule.test";
 const db = new PrismaClient();
 
 test("selected asset", async () => {
@@ -29,27 +30,28 @@ test("selected asset", async () => {
   console.log(selected_asset);
 });
 
-//audit_trail -> id, ts, by, activity, table, meta
-test("create maintenance schedule", async () => {
-  const mtn_schedule = await db.maintenance_schedule.create({
-    data: {
-        name: "Jadwal maintenance rutin",
-        scheduled_at: "2024-09-14 00:00:00",
-        m_user_maintenance_schedule_created_byTom_user: {
-          connect: { id: "67f64a2c-8ca6-49fe-94b2-de07ca907768"}
-        },
-        assigned_to: {
-            connect: {id: ""}
-            // connectOrCreate: {create: {}, where: {id : ""}}
-        },
-        m_asset: {
-            connect: {id: ""}
-        },
-        location: {
-            connect: {id: ""}
-        }
-    },
-  });
+// //audit_trail -> id, ts, by, activity, table, meta
+// test("create maintenance schedule", async () => {
+//   const asset = await get_asset()
+//   const mtn_schedule = await db.maintenance_schedule.create({
+//     data: {
+//         name: "Jadwal maintenance rutin",
+//         scheduled_at: "2024-09-14 00:00:00",
+//         m_user_maintenance_schedule_created_byTom_user: {
+//           connect: { id: "67f64a2c-8ca6-49fe-94b2-de07ca907768"}
+//         },
+//         assigned_to: {
+//             connect: {id: ""}
+//             // connectOrCreate: {create: {}, where: {id : ""}}
+//         },
+//         m_asset: {
+//             connect: {id: ""}
+//         },
+//         location: {
+//             connect: {id: ""}
+//         }
+//     },
+//   });
 
-  console.log(mtn_schedule);
-});
+//   console.log(mtn_schedule);
+// });
