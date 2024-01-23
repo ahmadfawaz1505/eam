@@ -27,54 +27,47 @@ test("detail location dan category", async () => {
   //   console.log(result);
 });
 
-test("detail create wo", async () => {
-  const result = await db.mo_plan.findMany({
+export const get_plan = async () => {
+  return await db.mo_plan.findMany({
     select: {
       id: true,
       name: true,
+      m_maintenance_task: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
       m_user: {
         select: {
           id: true,
           name: true,
         },
       },
-      maintenance_order: {
+      mop_material_mop_material_id_mo_planTomo_plan: {
         select: {
-          id: true,
-          name: true,
+          m_asset: {
+            select: {
+              name: true,
+            },
+          },
+          quantity: true,
         },
+        // _sum: {
+        //   price: true,
+        // },
       },
-      quantity: true,
+    },
+  });
+};
+
+test("detail create wo", async () => {
+  const plan = await get_plan();
+  const result = await db.mo_plan.aggregate({
+    _sum: {
       price: true,
     },
   });
 
-  //   console.log(result);
-});
-
-test("detail create wo", async () => {
-  const result = await db.inspection_record.findMany({
-    select: {
-      m_asset: {
-        select: {
-          id: true,
-          name: true,
-          category: {
-            select: {
-              id: true,
-              name: true,
-              created_at: true,
-            },
-          },
-          location: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-        },
-      },
-    },
-  });
   //   console.log(result);
 });
