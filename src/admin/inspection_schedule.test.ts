@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 const db = new PrismaClient();
 
-
 export  const get_asset =  async () => {
   return await db.m_asset.findFirst({
     where: {
