@@ -19,37 +19,24 @@ test("list maintenance schedule", async () => {
     where: {},
     select: {
       id: true,
-      created_at: true,
       name: true,
+      created_at: true,
     },
   });
 
   //   console.log(result);
 });
 
-test("list mo record", async () => {
-  const result = await db.mo_record.findMany({
+test("list inspection record", async () => {
+  const result = await db.inspection_record.findMany({
     where: {},
     select: {
       id: true,
+      id_inspection_schedule: true,
+      document_number: true,
+      result: true,
+      created_at: true,
       status: true,
-      m_asset: {
-        select: {
-          id: true,
-          category: {
-            select: {
-              name: true,
-            },
-          },
-          location: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-        },
-      },
-      // kurang yg 66%
     },
   });
 });
