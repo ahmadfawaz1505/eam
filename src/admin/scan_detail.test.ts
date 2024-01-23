@@ -1,8 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+import { get_asset } from "./inspection_schedule.test";
 const db = new PrismaClient();
 
 test("scan detail", async () => {
-  const scan_detail = await db.m_asset.findMany({
+  //const asset = await get_asset()
+  const scan_detail = await db.m_asset.findFirst({
+    where: {id: "fa95ef66-9024-4268-9a2e-f764ff9000c9"},
     select: {
       id: true,
       name: true,
@@ -30,5 +33,5 @@ test("scan detail", async () => {
       },
     },
   });
-  //  console.log(scan_detail);
+   console.log(scan_detail);
 });

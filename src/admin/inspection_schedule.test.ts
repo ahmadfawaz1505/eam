@@ -30,12 +30,11 @@ export  const get_asset =  async () => {
 
 test("new inspection schedule", async () => {
   const asset = await get_asset()
-
   const inp_schedule = await db.inspection_schedule.create({
     data: {
       name: "Jadwal inspeksi 23/01/2024",
-      // scheduled_at: "2024-01-10 00:00:00",
-      // created_at: new Date(),
+      scheduled_at: "2024-01-25T07:38:48.793Z",
+      created_at: new Date(),
       m_user_inspection_schedule_created_byTom_user: {
         connect: { id: "294d4986-f1ac-4bf5-9f0e-c963e94627b6" }
       },
@@ -49,9 +48,9 @@ test("new inspection schedule", async () => {
       },
       m_user:
       {
-        connect: { id: "67f64a2c-8ca6-49fe-94b2-de07ca907768" }
+        connect: { id: "dd226c0d-bda3-4862-97fc-9ff6e7dd2183" }
       },
     },
   });
-  console.log(inp_schedule);
+ // console.log(inp_schedule);
 });

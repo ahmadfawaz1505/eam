@@ -55,3 +55,30 @@ test("selected asset", async () => {
 
 //   console.log(mtn_schedule);
 // });
+
+test("new maintenance schedule", async () => {
+  const asset = await get_asset()
+  const mnt_schedule = await db.maintenance_schedule.create({
+    data: {
+      name: "Jadwal maintenance 23/01/2024",
+      scheduled_at: "2024-01-25T07:38:48.793Z",
+      created_at: new Date(),
+      m_user_maintenance_schedule_created_byTom_user: {
+        connect: { id: "294d4986-f1ac-4bf5-9f0e-c963e94627b6" }
+      },
+      m_asset: {
+        connect: {
+          id: asset.id,
+        }
+      },
+      location:{
+        connect: {id: asset.location.id}
+      },
+      m_user:
+      {
+        connect: { id: "67f64a2c-8ca6-49fe-94b2-de07ca907768" }
+      },
+    },
+  });
+  //console.log(mnt_schedule);
+});

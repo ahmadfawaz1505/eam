@@ -27,12 +27,12 @@ test("selected asset", async () => {
         },
       },
     });
-    console.log(selected_asset);
+    //console.log(selected_asset);
   });
 
-  test("refrence inspection record", async () => {
+export const get_inpRef = async () => {
     const asset = await get_asset()
-    const ref_inp = await db.inspection_record.findFirst({
+    return await db.inspection_record.findFirst({
       where: {
         m_asset: {
           id: asset.id,
@@ -52,15 +52,16 @@ test("selected asset", async () => {
         result: true,
       },
     });
-    console.log(ref_inp);
-  });
+}
+
 
 
 test("new maintenance ticket", async () => {
     const asset = await get_asset()
+    const inpOrder = await get_inpRef()
     const new_mtn_ticket = await db.maintenance_order.create({
         data: {
-            mo_number: "MTN1000112",
+            mo_number: "MTN1000114",
             name: "Service HP",
             status: "On Going",
             created_at: new Date(),
@@ -68,7 +69,7 @@ test("new maintenance ticket", async () => {
                 connect: {id: "294d4986-f1ac-4bf5-9f0e-c963e94627b6"}
             },
             inspection_record: {
-                connect: {id: "aff84e3b-ac2a-4176-a47a-d6dd5faec6f3"}
+                connect: {id: inpOrder.id}
             },
             m_asset: {
                 connect: {id: asset.id}
