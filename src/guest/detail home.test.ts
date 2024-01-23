@@ -2,20 +2,26 @@ import { PrismaClient } from "@prisma/client";
 const db = new PrismaClient();
 
 test("detail guest header", async () => {
-  const result = await db.m_asset.findMany({
+  const result = await db.inspection_detail.findMany({
     select: {
       id: true,
-      name: true,
-      category: {
+      inspection_record: {
         select: {
-          id: true,
-          name: true,
-        },
-      },
-      location: {
-        select: {
-          id: true,
-          name: true,
+          m_asset: {
+            select: {
+              id: true,
+              category: {
+                select: {
+                  name: true,
+                },
+              },
+              location: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
         },
       },
     },

@@ -36,3 +36,29 @@ test("card issue problem", async () => {
 
   //   console.log(result);
 });
+
+test("average score", async () => {
+  const result = await db.inspection_detail.aggregate({
+    where: {},
+    _avg: {
+      score: true,
+    },
+  });
+
+  //   console.log(result);
+});
+
+test("status bawahnya average score", async () => {
+  const result = await db.inspection_detail.findMany({
+    where: {},
+    select: {
+      inspection_record: {
+        select: {
+          result: true,
+        },
+      },
+    },
+  });
+
+  //   console.log(result);
+});

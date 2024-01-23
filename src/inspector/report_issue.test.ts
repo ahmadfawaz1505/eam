@@ -3,6 +3,7 @@ const db = new PrismaClient();
 
 test("detail asset dan location", async () => {
   const result = await db.m_asset.findMany({
+    // where: { id: "" },
     select: {
       id: true,
       name: true,
@@ -29,8 +30,6 @@ test("report issue problem", async () => {
     where: {},
     select: {
       id: true,
-      id_inspection_record: true,
-      id_parameter_inspection: true,
       note: true,
       score: true,
     },

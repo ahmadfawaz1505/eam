@@ -13,3 +13,14 @@ test("master asset create category", async () => {
 
   //   console.log(result);
 });
+
+// test("location delete", async () => {
+//   const result = await db.location.delete({
+//     where: {
+//       id:"e570e634-0a92-4e90-9ca9-c27ddd2473e1",
+//       name: "Rak pojok",
+//     },
+//   });
+
+//   //   console.log(result);
+// });

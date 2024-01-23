@@ -1,23 +1,21 @@
 import { PrismaClient } from "@prisma/client";
 const db = new PrismaClient();
 
-test("list maintenancne schedule", async () => {
-  const result = await db.mo_record.findMany({
+test("detail location dan category", async () => {
+  const result = await db.mo_plan.findMany({
     select: {
       id: true,
+      name: true,
       m_asset: {
         select: {
           id: true,
-          name: true,
           category: {
             select: {
-              id: true,
               name: true,
             },
           },
           location: {
             select: {
-              id: true,
               name: true,
             },
           },
