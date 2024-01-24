@@ -93,7 +93,9 @@ test("History maintenance plan", async () => {
       id: true,
       created_at: true,
       name: true,
-      
+      _count: { 
+        
+      },
     },
   });
   console.log(history_mtn_plan);

@@ -141,11 +141,11 @@ test("follow up", async () => {
   //  console.log(follow_up);
 });
 
-test("maintenance tracking", async () => {
-  const mtn_tracking = await db.inspection_schedule.findMany({
-    select: {
+// test("maintenance tracking", async () => {
+//   const mtn_tracking = await db.inspection_schedule.findMany({
+//     select: {
       
-    },
-  });
-  //  console.log(inp_schedule);
-});
+//     },
+//   });
+//   //  console.log(inp_schedule);
+// });
