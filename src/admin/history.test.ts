@@ -94,7 +94,7 @@ test("History maintenance plan", async () => {
       created_at: true,
       name: true,
       _count: { 
-        
+        select: {other_mo_plan},
       },
     },
   });
