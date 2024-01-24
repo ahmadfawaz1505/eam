@@ -53,6 +53,8 @@ model inspection_record {
   id_m_asset                                  String?              @db.Uuid
   created_by                                  String               @db.Uuid
   updated_by                                  String?              @db.Uuid
+  acc_status                                  String?              @default("accept") @db.VarChar
+  reason                                      String?              @db.VarChar
   inspection_detail                           inspection_detail[]
   m_user_inspection_record_created_byTom_user m_user               @relation("inspection_record_created_byTom_user", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
   inspection_schedule                         inspection_schedule? @relation(fields: [id_inspection_schedule], references: [id], onDelete: NoAction, onUpdate: NoAction)

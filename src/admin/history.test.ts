@@ -11,6 +11,7 @@ test("Histori inspection", async () => {
     },
     select: {
       id: true,
+      created_at: true,
       name: true,
       category: {
         select: {
@@ -66,6 +67,7 @@ test("History maintenance ticket", async () => {
     },
     select: {
       id: true,
+      created_at: true,
       mo_number: true,
       name: true,
       m_user: {
@@ -81,22 +83,17 @@ test("History maintenance ticket", async () => {
 
 
 test("History maintenance plan", async () => {
-  const history_mtn_plan = await db.mo_plan.findFirst({
+  const history_mtn_plan = await db.mo_plan.findMany({
     where: {
-      inspection_record: {
-        id: "e7d47cbf-9112-449d-946a-d69aad0884bb",
+      maintenance_order: {
+        id: "c1ce4c35-1d6e-47fc-bd53-f27bd16d4a6a",
       },
     },
     select: {
       id: true,
-      mo_number: true,
+      created_at: true,
       name: true,
-      m_user: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
+      
     },
   });
   console.log(history_mtn_plan);
